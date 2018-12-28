@@ -16,7 +16,6 @@
         ===
     -->
     <meta charset="utf-8">
-    <title>Free HTML5 Bootstrap Admin Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
     <meta name="author" content="Muhammad Usman">
@@ -41,7 +40,7 @@
 
     <!-- jQuery -->
     <script src="bower_components/jquery/jquery.min.js"></script>
-
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -64,7 +63,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="index.php"> <img alt="Charisma Logo" src="img/logo20.png" class="hidden-xs"/>
-                <span>Health</span></a>
+                <span>FSTBank</span></a>
 
             <!-- user dropdown starts -->
             <div class="btn-group pull-right">
@@ -104,7 +103,6 @@
             <!-- theme selector ends -->
 
             <ul class="collapse navbar-collapse nav navbar-nav top-menu">
-                <li><a href="index.php"><i class="glyphicon glyphicon-globe"></i> Visit Site</a></li>
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown"><i class="glyphicon glyphicon-star"></i> Dropdown <span
                             class="caret"></span></a>

@@ -1,29 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page isELIgnored="false"%>
+<form action="./GestionComptes" method="POST">
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Modifier un compte</title>
-</head>
-<body>
- <form action="./GestionComptes" method="POST">
- 
-	<table>
-		<tr>
-			<td>code:</td>
-			<td><input type="text" name="code"></input></td>			
-		</tr>
-		<tr>
-			<td>Solde de compte:</td>
-			<td><input type="text" name="solde"></input></td><input type="hidden" name="modifier" value="1"></input>
-						<td><input type="submit" name="submit" value="envoyer"></input></td>
-			
-		</tr>
-	</table>
-	</form>
-</body>
-</html>
+	<div class="form-group">
+
+		<label>Type de compte </label>
+		<div class="controls">
+			<select name="type">
+				<option value="prive" ${compte.type== 'prive' ? 'selected':'' }>Prive</option>
+				<option value="partage" ${compte.type== 'partage' ? 'selected':'' }>Partage</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label>solde du compte</label> <input type="number" step="0.001" name="solde"
+			class="form-control" placeholder="solde du compte"
+			value="${compte.solde}"></input>
+	</div>
+	<input type="hidden" name="code" value="${compte.code }"></input> <input
+		type="hidden" name="date" value="${compte.dateCreation }"></input> <input
+		type="submit" value="Envoyer" name="modifiercompte">
+
+</form>

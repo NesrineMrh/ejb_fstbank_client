@@ -1,6 +1,11 @@
 package c;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -13,28 +18,34 @@ import com.entity.Client;
 import com.entity.Compte;
 import com.metier.GestionClientsLocal;
 import com.metier.GestionComptesLocal;
-import com.sun.jmx.snmp.Timestamp;
-
 
 @WebServlet("/GestionComptes")
 public class GestionComptes extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	@EJB
-	GestionComptesLocal metier ;
+	GestionComptesLocal metier;
 	@EJB
 	GestionClientsLocal metierClient;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		if(request.getParameter("mod") == null){
-			metierClient.ajouterClient(new Client());
-			this.getServletContext().getRequestDispatcher("/ajouter_compte.jsp").forward(request, response);
-		}else {
+		//  rediriger vers la page de modification (ajax).
+		if (request.getParameter("modifier") != null ) {
+			int id = Integer.parseInt(request.getParameter("modifier")) ; 
+			Compte compte = metier.rechercherCompteParId(id);
+			request.setAttribute("compte", compte);
 			this.getServletContext().getRequestDispatcher("/modifier_compte.jsp").forward(request, response);
-		}
 		
+		} 
+		else {
+			
+			// envoyer la liste des compte
+			request.setAttribute("comptes", metier.consulterComptes());
+			this.getServletContext().getRequestDispatcher("/compte.jsp").forward(request, response);
+
+		}
+
 	}
 
 	/**
@@ -43,20 +54,40 @@ public class GestionComptes extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-	  if(request.getParameter("modifier") == null) {
-		int solde =Integer.parseInt(request.getParameter("solde"));
-		metier.ajouterCompte(new Compte(solde,null,1,metierClient.listClient()));
-		metier.ajouterCompte(new Compte(solde+1000,null,2,metierClient.listClient()));
-	  }else {
-		  	int code =Integer.parseInt(request.getParameter("code"));
-			int solde =Integer.parseInt(request.getParameter("solde"));
+
+		// teste si la requete Post est pour modifier
+		if (request.getParameter("modifiercompte") != null) {
+
+			int code = Integer.parseInt(request.getParameter("code"));
+			/*DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+			try {
+				Date date =format.parse(request.getParameter("date")) ;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			double solde = Double.parseDouble(request.getParameter("solde"));
+			String type = request.getParameter("type");
 			Compte c = new Compte();
-			c =	metier.rechercherCompteParId(code);
+			c = metier.rechercherCompteParId(code);
 			c.setSolde(solde);
+			c.setType(type);
 			metier.modifierCompte(c);
-	  }
-		request.setAttribute("comptes",metier.consulterComptes());
-		this.getServletContext().getRequestDispatcher("/liste_compte.jsp").forward(request, response);
+
+		}
+		// teste si la requete Post est pour ajouter
+		else {
+			String type = request.getParameter("type");
+			double solde=0;
+			if (!request.getParameter("solde").equals("")) {
+				 solde =Integer.parseInt(request.getParameter("solde"));
+			} 
+			Date dateCreation = new Date();
+			metier.ajouterCompte(new Compte(solde, dateCreation, type, metierClient.listClient()));
+
+		}
+		request.setAttribute("comptes", metier.consulterComptes());
+		this.getServletContext().getRequestDispatcher("/compte.jsp").forward(request, response);
 
 	}
 

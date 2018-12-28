@@ -3,12 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page isELIgnored="false"%>
 <jsp:include page="includes/header.jsp"></jsp:include>
-
+    <title>Gestion Compte</title>
 <div class="box-content">
 	<ul class="nav nav-tabs" id="myTab">
 		<li class="active"><a href="#medcin">Gestions des infirmiers</a></li>
-		<li><a href="#Ajouterinfirmier"><img src="img/add.png" />Ajouter
-				un infirmier</a></li>
+		<li><a href="#AjouteCompte"><img src="img/add.png" />Ajouter
+				un Compte</a></li>
 	</ul>
 	</br>
 
@@ -21,31 +21,31 @@
 					<!--table satrts-->
 					<table
 						class="table table-striped table-bordered bootstrap-datatable datatable responsive">
-						<thead>
+					<thead>
 							<tr>
-								<th>Username</th>
-								<th>Date registered</th>
-								<th>Role</th>
-								<th>Status</th>
+								<th>N°</th>
+								<th>Solde</th>
+								<th>Date de creation</th>
+								<th>Type de compte</th>
 								<th>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
+						<c:forEach items="${comptes}" var="compte">
 							<tr>
-								<td>David R</td>
-								<td class="center">2012/01/01</td>
-								<td class="center">Member</td>
-								<td class="center"><span
-									class="label-success label label-default">Active</span></td>
-								<td class="center"><a class="btn btn-success" href="#">
-										<i class="glyphicon glyphicon-zoom-in icon-white"></i> View
-								</a> <a class="btn btn-info" href="#"> <i
-										class="glyphicon glyphicon-edit icon-white"></i> Edit
-								</a> <a class="btn btn-danger" href="#"> <i
-										class="glyphicon glyphicon-trash icon-white"></i> Delete
+								<td>${compte.code}</td>
+								<td>${compte.solde}</td>
+								<td>${compte.dateCreation}</td>
+								<td>${compte.type}</td>
+								<td class="center"><a class="btn btn-success btn-view" href="#">
+										<i class="glyphicon glyphicon-zoom-in icon-white"></i> Afficher
+								</a> <a class="btn btn-info btn-edit" href="#" data-id="${compte.code}"> <i
+										class="glyphicon glyphicon-edit icon-white "></i> Modifier
+								</a> <a class="btn btn-danger btn-delete" href="#" data-id="${compte.code}"> <i
+										class="glyphicon glyphicon-trash icon-white"></i> Supprimer
 								</a></td>
 							</tr>
-							<tr>
+							</c:forEach>
 						</tbody>
 					</table>
 					<!--table ends -->
@@ -53,27 +53,28 @@
 			</div>
 			<!--row ends-->
 		</div>
-		<div class="tab-pane" id="Ajouterinfirmier">
+		<div class="tab-pane" id="AjouteCompte">
 			<div class="row">
 				<div class="col-md-2"></div>
 				<div class="col-md-8">
 					<div>
-
 						<div class="box-content">
 							<form action="./GestionComptes" method="POST">
+
 								<div class="form-group">
-									<label>solde du compte</label> <input type="text" name="solde"
-										class="form-control" placeholder="solde du compte">
-								</div>
-								<div class="form-group">
-									<label>sexe </label>
+									<label>Type de compte </label>
 									<div class="controls">
-										<select name="sexe">
-											<option>homme</option>
-											<option>femme</option>
+										<select name="type">
+											<option value="prive" >Prive</option>
+											<option value="partage" selected>Partage</option>
 										</select>
 									</div>
 								</div>
+								<div class="form-group">
+									<label>solde du compte</label> <input type="number" tep="0.001" name="solde"
+										class="form-control" placeholder="solde du compte">
+								</div>
+								
 								<div class="form-group">
 									<label for="exampleInputlogin">Login</label> <input type="text"
 										name="login" class="form-control" placeholder="login">
@@ -84,6 +85,7 @@
 										placeholder="password">
 								</div>
 								<input type="submit" value="Envoyer" name="ajoutercompte">
+								
 							</form>
 						</div>
 					</div>
@@ -96,5 +98,57 @@
 	</div>
 </div>
 
+<!--modal start -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>AFFICHAGE</h3>
+                </div>
+                <div class="modal-body" id="info">
+                   
+                </div>
+               
+            </div>
+        </div>
+    </div><!--modal ends-->
+
+<!--modal start -->
+    <div class="modal fade" id="myModalModif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>MODIFICATION</h3>
+                </div>
+                <div class="modal-body" id="infoModif">
+                   
+                </div>
+               
+            </div>
+        </div>
+    </div><!--modal ends-->
+    
 <jsp:include page="includes/footer.jsp"></jsp:include>
+<script>
+	$(document).ready(function () {
+		$('.btn-edit').click(function (e) {
+			var id = $(this).data('id');
+			$.ajax({
+				type : 'get',
+				url : 'GestionComptes?modifier='+id,
+				success : function(data) {
+					
+						$('#infoModif').html(data);
+						
+				}
+			});
+		});
+	});
+</script>
 

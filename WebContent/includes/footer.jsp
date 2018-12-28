@@ -41,5 +41,28 @@
 <script src="js/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="js/charisma.js"></script>
+<script>
+$(document).ready(function () {
+$('.btn-delete').click(function (e) {
+	var id = $(this).data('id');
+    swal({
+    	  title: "Voulez-vous vraiment supprimer le compte N° "+id+" ?",
+    	  text: "Une fois supprimer, vous ne pouvez plus le recuperer!",
+    	  icon: "warning",
+    	  buttons: ["Non!", "Oui!"],
+    	  dangerMode: true,
+    	})
+    	.then((willDelete) => {
+    	  if (willDelete) {
+    	    swal("Poof! Compte Supprimez!", {
+    	      icon: "success",
+    	    });
+    	  } else {
+    	    swal("Suppression Annuler!");
+    	  }
+    	});
+    });
+});
+</script>
 </body>
 </html>
