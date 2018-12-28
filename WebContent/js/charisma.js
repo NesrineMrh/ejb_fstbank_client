@@ -8,7 +8,20 @@ $(document).ready(function () {
     $.browser = {};
     $.browser.msie = {};
     switchTheme(currentTheme);
+   ///////////////// sectiion custom jS
 
+    
+    $('.btn-view').click(function (e) {
+        e.preventDefault();
+        $('#myModal').modal('show');
+    });
+    
+    $('.btn-edit').click(function (e) {
+        e.preventDefault();
+        $('#myModalModif').modal('show');
+    });
+
+////////////////////////////////////
     $('.navbar-toggle').click(function (e) {
         e.preventDefault();
         $('.nav-sm').html($('.navbar-collapse').html());
@@ -290,11 +303,7 @@ function docReady() {
         else                       $('i', $(this)).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
         $target.slideToggle();
     });
-    $('.btn-setting').click(function (e) {
-        e.preventDefault();
-        $('#myModal').modal('show');
-    });
-
+ 
 
     $('#calendar').fullCalendar({
         header: {
