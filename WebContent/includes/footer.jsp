@@ -54,9 +54,25 @@ $('.btn-delete').click(function (e) {
     	})
     	.then((willDelete) => {
     	  if (willDelete) {
-    	    swal("Poof! Compte Supprimez!", {
-    	      icon: "success",
-    	    });
+    		  $.ajax({
+  				type : 'get',
+  				url : 'GestionComptes?supprimer='+id,
+  				success : function(data) {
+  					if (data == "true"){
+  						swal("Poof! Compte Supprimez!", {
+  			    	      icon: "success",
+  			    	    }).then((val) => {
+  			    	    	
+  			    	      location.reload();
+  			    	      
+  			    	      });
+  					}else {
+  			    	    swal("Probleme avec la base de donnees!");
+  			    	  	location.reload();
+  					}		
+  				}
+  			});
+    	    
     	  } else {
     	    swal("Suppression Annuler!");
     	  }

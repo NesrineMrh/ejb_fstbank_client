@@ -1,6 +1,7 @@
 package c;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,16 +31,25 @@ public class GestionComptes extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//  rediriger vers la page de modification (ajax).
-		if (request.getParameter("modifier") != null ) {
-			int id = Integer.parseInt(request.getParameter("modifier")) ; 
+		// rediriger vers la page de modification (ajax).
+		if (request.getParameter("modifier") != null) {
+			int id = Integer.parseInt(request.getParameter("modifier"));
 			Compte compte = metier.rechercherCompteParId(id);
 			request.setAttribute("compte", compte);
 			this.getServletContext().getRequestDispatcher("/modifier_compte.jsp").forward(request, response);
-		
-		} 
-		else {
-			
+
+		} // traitement de la suppression
+		else if (request.getParameter("supprimer") != null) {
+			int id = Integer.parseInt(request.getParameter("supprimer"));
+			response.setContentType("text/plain");
+			PrintWriter out = response.getWriter();
+			if (metier.supprimerCompte(id))
+				out.print("true");
+			else
+				out.print("false");
+
+		} else {
+
 			// envoyer la liste des compte
 			request.setAttribute("comptes", metier.consulterComptes());
 			this.getServletContext().getRequestDispatcher("/compte.jsp").forward(request, response);
@@ -59,13 +69,12 @@ public class GestionComptes extends HttpServlet {
 		if (request.getParameter("modifiercompte") != null) {
 
 			int code = Integer.parseInt(request.getParameter("code"));
-			/*DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-			try {
-				Date date =format.parse(request.getParameter("date")) ;
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
+			/*
+			 * DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH); try {
+			 * Date date =format.parse(request.getParameter("date")) ; } catch
+			 * (ParseException e) { // TODO Auto-generated catch block e.printStackTrace();
+			 * }
+			 */
 			double solde = Double.parseDouble(request.getParameter("solde"));
 			String type = request.getParameter("type");
 			Compte c = new Compte();
@@ -78,17 +87,20 @@ public class GestionComptes extends HttpServlet {
 		// teste si la requete Post est pour ajouter
 		else {
 			String type = request.getParameter("type");
-			double solde=0;
+			double solde = 0;
 			if (!request.getParameter("solde").equals("")) {
-				 solde =Integer.parseInt(request.getParameter("solde"));
-			} 
+				solde = Integer.parseInt(request.getParameter("solde"));
+			}
 			Date dateCreation = new Date();
 			metier.ajouterCompte(new Compte(solde, dateCreation, type, metierClient.listClient()));
 
 		}
-		request.setAttribute("comptes", metier.consulterComptes());
-		this.getServletContext().getRequestDispatcher("/compte.jsp").forward(request, response);
-
+		/*
+		 * request.setAttribute("comptes", metier.consulterComptes());
+		 * this.getServletContext().getRequestDispatcher("/compte.jsp").forward(request,
+		 * response);
+		 */
+		response.sendRedirect("./GestionComptes");
 	}
 
 }

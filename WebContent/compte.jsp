@@ -6,7 +6,7 @@
     <title>Gestion Compte</title>
 <div class="box-content">
 	<ul class="nav nav-tabs" id="myTab">
-		<li class="active"><a href="#medcin">Gestions des infirmiers</a></li>
+		<li class="active"><a href="#medcin">Gestions des Comptes</a></li>
 		<li><a href="#AjouteCompte"><img src="img/add.png" />Ajouter
 				un Compte</a></li>
 	</ul>
@@ -41,7 +41,9 @@
 										<i class="glyphicon glyphicon-zoom-in icon-white"></i> Afficher
 								</a> <a class="btn btn-info btn-edit" href="#" data-id="${compte.code}"> <i
 										class="glyphicon glyphicon-edit icon-white "></i> Modifier
-								</a> <a class="btn btn-danger btn-delete" href="#" data-id="${compte.code}"> <i
+								</a> 
+								<!-- JS du boutton supprimer est dans includes/footer.jsp -->
+								<a class="btn btn-danger btn-delete" href="#" data-id="${compte.code}"> <i
 										class="glyphicon glyphicon-trash icon-white"></i> Supprimer
 								</a></td>
 							</tr>
@@ -136,7 +138,6 @@
     
 <jsp:include page="includes/footer.jsp"></jsp:include>
 <script>
-	$(document).ready(function () {
 		$('.btn-edit').click(function (e) {
 			var id = $(this).data('id');
 			$.ajax({
@@ -149,6 +150,6 @@
 				}
 			});
 		});
-	});
+	
 </script>
 
