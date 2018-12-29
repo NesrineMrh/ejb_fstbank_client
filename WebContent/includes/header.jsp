@@ -141,21 +141,26 @@
                         
                         <li class="nav-header">Main</li>
                         <li><a class="ajax-link" href="index.php"><i class="glyphicon glyphicon-home"></i><span> Dashboard</span></a>
+                        </li>               
+                        <li><a class="ajax-link"><img src="img/pat-24.png"/><span> Client</span></a>
+                            <ul>
+							  <li><a href="#">Ajouter client</a></li>
+							  <li><a href="#">Modifier client</a></li>
+							  <li><a href="#">Supprimer client</a></li>
+							</ul>
+						</li>
+                        <li><a class="ajax-link"><img src="img/pat-24.png"/><span> Compte</span></a>
+							<ul>
+							  <li><a href="#">Ajouter compte</a></li>
+							  <li><a href="#">Modifier compte</a></li>
+							  <li><a href="#">Supprimer compte</a></li>
+							  <li><a href="#">Consulter compte</a></li>
+							  <li><a href="#">Créditer</a></li>
+							  <li><a href="#">Débiter</a></li>
+							</ul>
                         </li>
-                        <li><a class="ajax-link" href="secretaire.php"><img src="img/Nurse-24.png"/><span> Secretaire</span></a></li>
-                        <?php if ($_SESSION['espace']!="infirmier"  && $_SESSION['espace']!="secretaire"): 
-                        ?>
-                         <li><a class="ajax-link" href="Medecin.php"><img src="img/doctor-24.png"/><span> Medecin</span></a></li>
-                        <?php endif; ?>
-                        <li><a class="ajax-link" href="Patient.php"><img src="img/pat-24.png"/><span> Patient</span></a>
-                        </li>
-                        <?php if ($_SESSION['espace']!="secretaire") :?>
-                         <li><a class="ajax-link" href="Infirmier.php"><img src="img/inf-24.png"/><span> Infirmier</span></a>
-                        </li>
-                        <?php endif; ?>
-                        <li><a class="ajax-link" href="lit.php"><img src="img/bed-24.png"/><span> lit</span></a></li>
-                        <li><a class="ajax-link" href="chambre.php"><img src="img/ch-24.png"/><span> chambre</span></a></li>
-
+                         <li><a class="ajax-link" href="Infirmier.php"><img src="img/inf-24.png"/><span>Banquier</span></a>
+                        </li>                   
                         <li><a class="ajax-link" href="calendar.php"><i class="glyphicon glyphicon-calendar"></i><span> Calendar</span></a>
                         </li>
                         <li><a href="error.html"><i class="glyphicon glyphicon-ban-circle"></i><span> Error Page</span></a>

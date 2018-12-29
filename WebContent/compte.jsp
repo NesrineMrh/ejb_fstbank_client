@@ -37,7 +37,8 @@
 								<td>${compte.solde}</td>
 								<td>${compte.dateCreation}</td>
 								<td>${compte.type}</td>
-								<td class="center"><a class="btn btn-success btn-view" href="#">
+								<td class="center">
+								<a class="btn btn-success btn-view" href="#" data-id="${compte.code}">
 										<i class="glyphicon glyphicon-zoom-in icon-white"></i> Afficher
 								</a> <a class="btn btn-info btn-edit" href="#" data-id="${compte.code}"> <i
 										class="glyphicon glyphicon-edit icon-white "></i> Modifier

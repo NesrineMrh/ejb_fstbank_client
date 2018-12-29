@@ -79,6 +79,43 @@ $('.btn-delete').click(function (e) {
     	});
     });
 });
+$(document).ready(function () {
+	$('.btn-delete-client').click(function (e) {
+		var id = $(this).data('id');
+	    swal({
+	    	  title: "Voulez-vous vraiment supprimer le client dont l'id : "+id+" ?",
+	    	  text: "Une fois supprimer, vous ne pouvez plus le recuperer!",
+	    	  icon: "warning",
+	    	  buttons: ["Non!", "Oui!"],
+	    	  dangerMode: true,
+	    	})
+	    	.then((willDelete) => {
+	    	  if (willDelete) {
+	    		  $.ajax({
+	  				type : 'get',
+	  				url : 'GestionClients?supprimer='+id,
+	  				success : function(data) {
+	  					if (data == "true"){
+	  						swal("Poof! Client Supprimez!", {
+	  			    	      icon: "success",
+	  			    	    }).then((val) => {
+	  			    	    	
+	  			    	      location.reload();
+	  			    	      
+	  			    	      });
+	  					}else {
+	  			    	    swal("Probleme avec la base de donnees!");
+	  			    	  	location.reload();
+	  					}		
+	  				}
+	  			});
+	    	    
+	    	  } else {
+	    	    swal("Suppression Annuler!");
+	    	  }
+	    	});
+	    });
+	});
 </script>
 </body>
 </html>
