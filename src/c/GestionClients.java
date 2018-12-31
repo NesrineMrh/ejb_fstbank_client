@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.ejb.EJB;
@@ -80,14 +82,13 @@ public class GestionClients extends HttpServlet {
 		// teste si la requete Post est pour ajouter
 		else {
 			
-			int id = Integer.parseInt(request.getParameter("id"));
-			System.out.println("idddd: "+id);
 			String nom = request.getParameter("nom");
-			System.out.println("nom: "+nom);
 			String prenom = request.getParameter("prenom");
-			System.out.println("prenom: "+prenom);
-			metierClient.ajouterClient(new Client(id,nom,prenom));
-			//metierClient.ajouterClient(new Client(id,nom,prenom,metier.consulterComptes()));
+			List<Compte> comptes = new ArrayList<>();
+			comptes.add(metier.rechercherCompteParId(2));
+			//Client c = new Client(nom,prenom);
+			
+			metierClient.ajouterClient(new Client(nom,prenom,comptes));
 		}
 		response.sendRedirect("./GestionClients");
 	}

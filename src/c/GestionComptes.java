@@ -48,6 +48,10 @@ public class GestionComptes extends HttpServlet {
 			else
 				out.print("false");
 
+		}else if(request.getParameter("associer") != null) {
+			request.setAttribute("comptes", metier.consulterComptes());
+			request.setAttribute("clients", metierClient.listClient());
+			this.getServletContext().getRequestDispatcher("/compte_client.jsp").forward(request, response);
 		} else {
 
 			// envoyer la liste des compte
@@ -83,6 +87,13 @@ public class GestionComptes extends HttpServlet {
 			c.setType(type);
 			metier.modifierCompte(c);
 
+		}else if(request.getParameter("associer") != null) {
+			String compte = request.getParameter("compte");
+			String client = request.getParameter("client");
+			System.out.println(compte);
+			System.out.println(client);
+		
+		
 		}
 		// teste si la requete Post est pour ajouter
 		else {
@@ -93,7 +104,7 @@ public class GestionComptes extends HttpServlet {
 			}
 			Date dateCreation = new Date();
 			metier.ajouterCompte(new Compte(solde, dateCreation, type, metierClient.listClient()));
-
+			
 		}
 		/*
 		 * request.setAttribute("comptes", metier.consulterComptes());
