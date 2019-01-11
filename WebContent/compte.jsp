@@ -6,14 +6,16 @@
     <title>Gestion Compte</title>
 <div class="box-content">
 	<ul class="nav nav-tabs" id="myTab">
-		<li class="active"><a href="#medcin">Gestions des Comptes</a></li>
+		<li class="active"><a href="#compte">Gestions des Comptes</a></li>
 		<li><a href="#AjouteCompte"><img src="img/add.png" />Ajouter
 				un Compte</a></li>
+				<li><a href="#AjouteComptePro"><img src="img/add.png" />Ajouter
+				un Compte Professionnel</a></li>
 	</ul>
 	</br>
 
 	<div id="myTabContent" class="tab-content">
-		<div class="tab-pane active" id="medcin">
+		<div class="tab-pane active" id="compte">
 
 			<div class="row">
 				<div class="col-md-12">
@@ -87,6 +89,51 @@
 										type="password" name="password" class="form-control"
 										placeholder="password">
 								</div>
+								<input type="hidden" name="typeCompte" value="particulier">
+								<input type="submit" value="Envoyer" name="ajoutercompte">
+								
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--/span-->
+
+			</div>
+			<!--end row-->
+		</div>
+				<div class="tab-pane" id="AjouteComptePro">
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<div>
+						<div class="box-content">
+							<form action="./GestionComptes" method="POST">
+
+								<div class="form-group">
+									<label>Type de compte </label>
+									<div class="controls">
+										<select name="type">
+											<option value="prive" >Prive</option>
+											<option value="partage" selected>Partage</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>solde du compte</label> <input type="number" tep="0.001" name="solde"
+										class="form-control" placeholder="solde du compte">
+								</div>
+								
+								
+								<div class="form-group">
+									<label for="exampleInputlogin">Login</label> <input type="text"
+										name="login" class="form-control" placeholder="login">
+								</div>
+								<div class="form-group">
+									<label for="exampleInputPassword1">Password</label> <input
+										type="password" name="password" class="form-control"
+										placeholder="password">
+								</div>
+								<input type="hidden" name="typeCompte" value="Professionnel">
 								<input type="submit" value="Envoyer" name="ajoutercompte">
 								
 							</form>

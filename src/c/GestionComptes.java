@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.entity.Client;
 import com.entity.Compte;
+import com.entity.CompteProfessionnel;
+import com.entity.FactoryCompte;
 import com.metier.GestionClientsLocal;
 import com.metier.GestionComptesLocal;
 
@@ -102,8 +105,21 @@ public class GestionComptes extends HttpServlet {
 			if (!request.getParameter("solde").equals("")) {
 				solde = Integer.parseInt(request.getParameter("solde"));
 			}
+			String typeCompte=request.getParameter("typeCompte");
+			
+			FactoryCompte fc = new FactoryCompte();
+			Compte compte = fc.getCompte(typeCompte);
 			Date dateCreation = new Date();
-			metier.ajouterCompte(new Compte(solde, dateCreation, type, metierClient.listClient()));
+			compte.setClient(new ArrayList<Client>());
+			compte.setSolde(solde);
+			compte.setDateCreation(dateCreation);
+			compte.setType(type);
+			//le cas d'un compte professionnel il faut ajouter les champ supplaimentaire.
+			if(typeCompte.equals("Professionnel")) {
+				
+				((CompteProfessionnel) compte).setAdress("LOL");
+				}
+			metier.ajouterCompte(compte);
 			
 		}
 		/*
