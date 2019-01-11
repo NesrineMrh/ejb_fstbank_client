@@ -98,7 +98,7 @@ public class GestionComptes extends HttpServlet {
 			String[] compte = request.getParameterValues("compte");
 			String client = request.getParameter("client");
 			for (int i = 0 ; i < compte.length ; i++) System.out.println(compte[i]);
-			System.out.println(client);
+			System.out.println("----------------------cc"+client);
 		
 		
 		}
@@ -117,11 +117,13 @@ public class GestionComptes extends HttpServlet {
 			compte.setClient(new ArrayList<Client>());
 			compte.setSolde(solde);
 			compte.setDateCreation(dateCreation);
-			compte.setType(type);
+			
 			//le cas d'un compte professionnel il faut ajouter les champ supplaimentaire.
 			if(typeCompte.equals("Professionnel")) {
 				
-				((CompteProfessionnel) compte).setAdress("LOL");
+				((CompteProfessionnel) compte).setType("Professionnel");
+				}else {
+				compte.setType(type);
 				}
 			metier.ajouterCompte(compte);
 			

@@ -9,6 +9,8 @@
 		<li class="active"><a href="#medcin">Gestions des client</a></li>
 		<li><a href="#AjouteClient"><img src="img/add.png" />Ajouter
 				un client</a></li>
+				<li><a href="#AjouteClientPro"><img src="img/add.png" />Ajouter
+				un Client Professionnel</a></li>
 	</ul>
 	</br>
 
@@ -76,6 +78,48 @@
 									<label>Prenom</label> <input type="text"
 										name="prenom" class="form-control" placeholder="prenom">
 								</div>
+								<input type="submit" value="Envoyer" name="ajouterclient">
+								
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--/span-->
+
+			</div>
+			<!--end row-->
+		</div>
+						<div class="tab-pane" id="AjouteClientPro">
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<div>
+						<div class="box-content">
+							<form action="./GestionClients" method="POST">
+
+								<div class="form-group">
+									<label>Nom :</label> <input type="text" name="nomEnt"
+										class="form-control" placeholder="nom de l'entreprise">
+								</div>
+								<div class="form-group">
+									<label>Local :</label> <input type="text" name="adresseEnt"
+										class="form-control" placeholder="adresse de l'entreprise">
+								</div>
+								<div class="form-group">
+									<label>Telephone :</label> <input type="text" name="telephoneEnt"
+										class="form-control" placeholder="telephone">
+								</div>	
+								
+								<div class="form-group">
+									<label for="exampleInputlogin">Login</label> <input type="text"
+										name="login" class="form-control" placeholder="login">
+								</div>
+								<div class="form-group">
+									<label for="exampleInputPassword1">Password</label> <input
+										type="password" name="password" class="form-control"
+										placeholder="password">
+								</div>
+								<input type="hidden" name="typeClient" value="Professionnel">
 								<input type="submit" value="Envoyer" name="ajouterclient">
 								
 							</form>

@@ -118,18 +118,7 @@
 										</select>
 									</div>
 								</div>
-								<div class="form-group">
-									<label>Nom :</label> <input type="text" name="nomEnt"
-										class="form-control" placeholder="nom de l'entreprise">
-								</div>
-								<div class="form-group">
-									<label>Local :</label> <input type="text" name="adresse"
-										class="form-control" placeholder="adresse de l'entreprise">
-								</div>
-								<div class="form-group">
-									<label>Telephone :</label> <input type="text" name="telephone"
-										class="form-control" placeholder="telephone">
-								</div>	
+						
 								<div class="form-group">
 									<label>solde du compte</label> <input type="number" tep="0.001" name="solde"
 										class="form-control" placeholder="solde du compte">

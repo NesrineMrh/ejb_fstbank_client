@@ -28,16 +28,15 @@
 							<label class="control-label" for="selectError2">Selectionner
 								un client</label>
 							<div class="controls">
-								<select data-placeholder="Your Favorite Football Team"
+								<select data-placeholder="choisir un client"
 									id="selectError2" data-rel="chosen" name="client">
 									<option value=""></option>
-									<optgroup label="NFC EAST">
-										<option>Dallas Cowboys</option>
+									<optgroup label="Particulier">
 										<option>New York Giants</option>
 										<option>Philadelphia Eagles</option>
 										<option>Washington Redskins</option>
 									</optgroup>
-									<optgroup label="NFC NORTH">
+									<optgroup label="Professionnel">
 										<option>Chicago Bears</option>
 										<option>Detroit Lions</option>
 										<option>Green Bay Packers</option>
