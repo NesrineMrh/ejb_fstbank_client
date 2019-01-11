@@ -82,6 +82,43 @@
 									</c:forEach>						
 								</optgroup>-->
 
-	</div>
+				<div class="row">
+				<div class="col-md-12">
+
+					<!--table satrts-->
+					<table
+						class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+					<thead>
+							<tr>
+								<th>N°</th>
+								<th>Nom</th>
+								<th>Prenom</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+						<c:forEach items="${clients}" var="client">
+							<tr>
+								<td>${client.id}</td>
+								<td>${client.nom}</td>
+								<td>${client.prenom}</td>
+								<td class="center">
+								<a class="btn btn-success btn-view" href="#" data-id="${client.id}">
+										<i class="glyphicon glyphicon-zoom-in icon-white"></i> Afficher
+								</a> <a class="btn btn-info btn-edit" href="#" data-id="${client.id}"> <i
+										class="glyphicon glyphicon-edit icon-white "></i> Modifier
+								</a> 
+								<!-- JS du boutton supprimer est dans includes/footer.jsp -->
+								<a class="btn btn-danger btn-delete-client" href="#" data-id="${client.id}"> <i
+										class="glyphicon glyphicon-trash icon-white"></i> Supprimer
+								</a></td>
+							</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					<!--table ends -->
+				</div>
+			</div>
+</div>
 	<!--/row-->
 	<jsp:include page="includes/footer.jsp"></jsp:include>
