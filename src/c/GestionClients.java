@@ -85,8 +85,7 @@ public class GestionClients extends HttpServlet {
 			String nom = request.getParameter("nom");
 			String prenom = request.getParameter("prenom");
 			List<Compte> comptes = new ArrayList<>();
-			comptes.add(metier.rechercherCompteParId(2));
-			//Client c = new Client(nom,prenom);
+			//comptes.add(metier.rechercherCompteParId(2));
 			
 			metierClient.ajouterClient(new Client(nom,prenom,comptes));
 		}

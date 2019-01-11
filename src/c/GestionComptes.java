@@ -54,6 +54,10 @@ public class GestionComptes extends HttpServlet {
 		}else if(request.getParameter("associer") != null) {
 			request.setAttribute("comptes", metier.consulterComptes());
 			request.setAttribute("clients", metierClient.listClient());
+			/*ArrayList<Client> clients = new ArrayList<>();
+			clients = (ArrayList<Client>) metierClient.listClientByCompte(2);
+			
+			clients.forEach(System.out::println);*/
 			this.getServletContext().getRequestDispatcher("/compte_client.jsp").forward(request, response);
 		} else {
 
@@ -91,9 +95,9 @@ public class GestionComptes extends HttpServlet {
 			metier.modifierCompte(c);
 
 		}else if(request.getParameter("associer") != null) {
-			String compte = request.getParameter("compte");
+			String[] compte = request.getParameterValues("compte");
 			String client = request.getParameter("client");
-			System.out.println(compte);
+			for (int i = 0 ; i < compte.length ; i++) System.out.println(compte[i]);
 			System.out.println(client);
 		
 		
