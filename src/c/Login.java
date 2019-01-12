@@ -40,7 +40,7 @@ public class Login extends HttpServlet {
         if(username.equals(password))
         {
         	request.getSession().setAttribute("user", "Saliiiiimmm");
-        	response.sendRedirect(request.getContextPath() + "/DashClient");
+        	response.sendRedirect(request.getContextPath() + "/acceuil_client");
         	return;
         }
         else
