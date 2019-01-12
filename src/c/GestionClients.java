@@ -21,6 +21,8 @@ import com.entity.Client;
 import com.entity.ClientProfessionnel;
 import com.entity.Compte;
 import com.entity.CompteProfessionnel;
+import com.entity.FactoryClient;
+import com.entity.FactoryCompte;
 import com.metier.GestionClientsLocal;
 import com.metier.GestionComptesLocal;
 
@@ -83,23 +85,25 @@ public class GestionClients extends HttpServlet {
 		}
 		// teste si la requete Post est pour ajouter
 		else {
-			
-			
-			//comptes.add(metier.rechercherCompteParId(2));
 			String typeClient=request.getParameter("typeClient");
+			String nom = request.getParameter("nom");
+			String prenom = request.getParameter("prenom");
+			String adresse;
+			String telephone ;
+			//creation de l'objet grace a factory
+			FactoryClient fc = new FactoryClient();
+			Client client = fc.getClient(typeClient);
+			client.setNom(nom);
+			client.setPrenom(prenom);
 			
 			if(typeClient.equals("Professionnel")) {
-				String nom = request.getParameter("nomEnt");
-				String adresse = request.getParameter("adresseEnt");
-				String telephone = request.getParameter("telephoneEnt");
-				List<Compte> comptes = new ArrayList<>();
-				metierClient.ajouterClientProfessionnel(new ClientProfessionnel(adresse,telephone));
-				}else {
-					String nom = request.getParameter("nom");
-					String prenom = request.getParameter("prenom");
-					List<Compte> comptes = new ArrayList<>();
-					metierClient.ajouterClient(new Client(nom,prenom,comptes));
+				adresse = request.getParameter("adresseEnt");
+				telephone = request.getParameter("telephoneEnt");
+				((ClientProfessionnel) client).setAdresseEntreprise(adresse);
+				((ClientProfessionnel) client).setTelephoneEntreprise(telephone);
 				}
+			
+			metierClient.ajouterClient(client);
 		}
 		response.sendRedirect("./GestionClients");
 	}

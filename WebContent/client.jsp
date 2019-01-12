@@ -63,12 +63,6 @@
 					<div>
 						<div class="box-content">
 							<form action="./GestionClients" method="POST">
-
-								<div class="form-group">
-									<label>id client </label>
-								<input type="number" tep="0.001" name="id"
-										class="form-control" placeholder="id client">
-								</div>
 								<div class="form-group">
 									<label>Nom</label> <input type="text" tep="0.001" name="nom"
 										class="form-control" placeholder="nom">
@@ -78,6 +72,7 @@
 									<label>Prenom</label> <input type="text"
 										name="prenom" class="form-control" placeholder="prenom">
 								</div>
+								<input type="hidden" name="typeClient" value="particulier">
 								<input type="submit" value="Envoyer" name="ajouterclient">
 								
 							</form>
@@ -98,7 +93,7 @@
 							<form action="./GestionClients" method="POST">
 
 								<div class="form-group">
-									<label>Nom :</label> <input type="text" name="nomEnt"
+									<label>Nom :</label> <input type="text" name="nom"
 										class="form-control" placeholder="nom de l'entreprise">
 								</div>
 								<div class="form-group">

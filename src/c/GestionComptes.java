@@ -76,14 +76,9 @@ public class GestionComptes extends HttpServlet {
 			
 			for (Compte compte : comptes) {
 				
-				if ( compte.getType().equals("prive") && metier.count(compte.getCode()) < 1
-					|| compte.getType().equals("partage") && metier.count(compte.getCode()) < 10)
+				if (  metier.count(compte.getCode()) < 10)
 					comptesTrie.add(compte);
 			}
-			
-			
-			
-			
 			// envoyer tous les clients et tous les comptes
 			request.setAttribute("allcomptes", comptesTrie);
 			request.setAttribute("allclients", metierClient.listClient());
@@ -144,6 +139,7 @@ public class GestionComptes extends HttpServlet {
 			
 			client.setComptes(comptes);
 			metierClient.modifierClient(client);
+			response.sendRedirect("./GestionComptes");
 			
 		}else if(request.getParameter("verser") != null) {
 			int codeDestine = Integer.parseInt(request.getParameter("codeDestine"));
@@ -192,7 +188,6 @@ public class GestionComptes extends HttpServlet {
 			compte.setClient(new ArrayList<Client>());
 			compte.setSolde(solde);
 			compte.setDateCreation(dateCreation);
-
 			compte.setType(type);
 			/**le cas d'un compte professionnel il faut ajouter les champ supplaimentaire.
 			if(typeCompte.equals("Professionnel")) {
