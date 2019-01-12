@@ -6,10 +6,8 @@
 <div class="box-content">
 	<ul class="nav nav-tabs" id="myTab">
 		<li class="active"><a href="#compte">Gestions des Comptes</a></li>
-		<li><a href="#AjouteCompte"><img src="img/add.png" />Ajouter
-				un Compte</a></li>
-				<li><a href="#AjouteComptePro"><img src="img/add.png" />Ajouter
-				un Compte Professionnel</a></li>
+		<li><a href="#AjouteCompte"><img src="img/add.png" />Ajouter un Compte</a></li>
+				<li><a href="#AjouteComptePro"><img src="img/add.png" />Ajouter un Compte Professionnel</a></li>
 	</ul>
 	</br>
 
@@ -154,23 +152,6 @@
 	</div>
 </div>
 
-<!--modal start -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h3>AFFICHAGE</h3>
-                </div>
-                <div class="modal-body" id="info">
-                   
-                </div>
-               
-            </div>
-        </div>
-    </div><!--modal ends-->
 
 <!--modal start -->
     <div class="modal fade" id="myModalModif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -189,7 +170,6 @@
             </div>
         </div>
     </div><!--modal ends-->
-
     <!--modal start -->
 	 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		 <div class="modal-dialog">
@@ -206,6 +186,7 @@
 		  </div>
 	 </div><!--modal ends-->
 					
+
 <jsp:include page="includes/footer.jsp"></jsp:include>
 <script>
 		$('.btn-modif').click(function (e) {

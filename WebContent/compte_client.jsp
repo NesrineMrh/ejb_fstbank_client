@@ -28,8 +28,9 @@
 							<label class="control-label" for="selectError2">Selectionner
 								un client</label>
 							<div class="controls">
-								<select data-placeholder="Your Favorite Football Team"
+								<select data-placeholder="choisir un client"
 									id="selectError2" data-rel="chosen" name="client">
+
 									<option value="">choix d'un client</option>
 									<optgroup label="Client particulier">
 										<c:forEach items="${allclients}" var="c">

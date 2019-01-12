@@ -51,23 +51,23 @@ public class GestionComptes extends HttpServlet {
 				out.print("true");
 			else
 				out.print("false");
-			//traitement du virement
-			else if (request.getParameter("verser") != null) {
-				int id = Integer.parseInt(request.getParameter("verser"));
-				System.out.println(id);
-				Compte compte = metier.rechercherCompteParId(id);
-				request.setAttribute("compte", compte);
-				this.getServletContext().getRequestDispatcher("/virement.jsp").forward(request, response);
+			}//traitement du virement
+		else if (request.getParameter("verser") != null) {
+			int id = Integer.parseInt(request.getParameter("verser"));
+			System.out.println(id);
+			Compte compte = metier.rechercherCompteParId(id);
+			request.setAttribute("compte", compte);
+			this.getServletContext().getRequestDispatcher("/virement.jsp").forward(request, response);
 
-			}
-			else if (request.getParameter("retirer") != null) {
-				int id = Integer.parseInt(request.getParameter("retirer"));
-				System.out.println(id);
-				Compte compte = metier.rechercherCompteParId(id);
-				request.setAttribute("compte", compte);
-				this.getServletContext().getRequestDispatcher("/retrait.jsp").forward(request, response);
-			
-			}else if(request.getParameter("associer") != null) {
+		}
+		else if (request.getParameter("retirer") != null) {
+			int id = Integer.parseInt(request.getParameter("retirer"));
+			System.out.println(id);
+			Compte compte = metier.rechercherCompteParId(id);
+			request.setAttribute("compte", compte);
+			this.getServletContext().getRequestDispatcher("/retrait.jsp").forward(request, response);
+
+		}else if(request.getParameter("associer") != null) {
 			
 			ArrayList<Compte> comptes = new ArrayList<>();
 			comptes = (ArrayList<Compte>) metier.consulterComptes();
@@ -89,6 +89,7 @@ public class GestionComptes extends HttpServlet {
 			request.setAttribute("allclients", metierClient.listClient());
 			
 			this.getServletContext().getRequestDispatcher("/compte_client.jsp").forward(request, response);
+		
 		} else {
 
 			// envoyer la liste des compte
@@ -171,8 +172,7 @@ public class GestionComptes extends HttpServlet {
 			double montant =Double.parseDouble(request.getParameter("montant"));
 			int code = Integer.parseInt(request.getParameter("code"));
 				metier.retirer(montant, code);
-			}
-		// teste si la requete Post est pour ajouter
+			}// teste si la requete Post est pour ajouter
 		else {
 			String type = request.getParameter("type");
 			double solde = 0;
@@ -189,10 +189,10 @@ public class GestionComptes extends HttpServlet {
 			compte.setClient(new ArrayList<Client>());
 			compte.setSolde(solde);
 			compte.setDateCreation(dateCreation);
+
 			compte.setType(type);
 			/**le cas d'un compte professionnel il faut ajouter les champ supplaimentaire.
 			if(typeCompte.equals("Professionnel")) {
-				
 				((CompteProfessionnel) compte).setType(type);
 			}
 			**/
