@@ -51,6 +51,22 @@ public class GestionComptes extends HttpServlet {
 			else
 				out.print("false");
 
+		}//traitement du virement
+		else if (request.getParameter("verser") != null) {
+			int id = Integer.parseInt(request.getParameter("verser"));
+			System.out.println(id);
+			Compte compte = metier.rechercherCompteParId(id);
+			request.setAttribute("compte", compte);
+			this.getServletContext().getRequestDispatcher("/virement.jsp").forward(request, response);
+
+		}
+		else if (request.getParameter("retirer") != null) {
+			int id = Integer.parseInt(request.getParameter("retirer"));
+			System.out.println(id);
+			Compte compte = metier.rechercherCompteParId(id);
+			request.setAttribute("compte", compte);
+			this.getServletContext().getRequestDispatcher("/retrait.jsp").forward(request, response);
+
 		}else if(request.getParameter("associer") != null) {
 			request.setAttribute("comptes", metier.consulterComptes());
 			request.setAttribute("clients", metierClient.listClient());
@@ -59,6 +75,7 @@ public class GestionComptes extends HttpServlet {
 			
 			clients.forEach(System.out::println);*/
 			this.getServletContext().getRequestDispatcher("/compte_client.jsp").forward(request, response);
+		
 		} else {
 
 			// envoyer la liste des compte
@@ -101,7 +118,36 @@ public class GestionComptes extends HttpServlet {
 			System.out.println("----------------------cc"+client);
 		
 		
-		}
+		}else if(request.getParameter("verser") != null) {
+			int codeDestine = Integer.parseInt(request.getParameter("codeDestine"));
+			double montant =Double.parseDouble(request.getParameter("montant"));
+			int code = Integer.parseInt(request.getParameter("code"));
+			System.out.println("code2"+codeDestine+"-----mont"+montant+"-------code"+code);
+			response.setContentType("text/plain");
+			PrintWriter out = response.getWriter();
+			if (metier.rechercherCompteParId(codeDestine)!=null){
+			    Compte c = metier.rechercherCompteParId(code);
+			    System.out.println("dkhhhhhhhhhhhhhhhhel!!");
+			    if(montant>c.getSolde()){
+			    	System.out.println("sodeeeeeInnn");
+					out.print("soldeInsuffisant");	
+			    }else {
+			    	System.out.println("ccccccccc bnnnn");
+				metier.verser(montant, codeDestine);
+				metier.retirer(montant, code);
+				out.print("./GestionComptes");
+			    }
+			}else {
+		    	System.out.println("ComppppppppteIntrr");
+				out.print("CompteNonTrouvee");
+			}
+		}else if(request.getParameter("retirer") != null){
+			double solde = Double.parseDouble(request.getParameter("solde"));
+			double montant =Double.parseDouble(request.getParameter("montant"));
+			int code = Integer.parseInt(request.getParameter("code"));
+				metier.retirer(montant, code);
+			}
+		
 		// teste si la requete Post est pour ajouter
 		else {
 			String type = request.getParameter("type");
