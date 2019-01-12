@@ -37,18 +37,16 @@
 			success: function(resultat){
 				console.log(resultat);
 				if (resultat == "CompteNonTrouvee") {  
-					console.log("commmmpteInttttttttttttt");
 					swal("Le compte destinaire n existe pas vérifier son code !!", {
-			    	      icon: "success",
+			    	      icon: "error",
 			    	    }).then((val) => {
-			    	    	
-			    	      location.reload();
+			    	   
 			    	      
 			    	      });
 				}
 				else if(resultat == "soldeInsuffisant") {  
 					swal("votre solde est insuffisant pour faire ce virement !", {
-			    	      icon: "success",
+			    	      icon: "error",
 			    	    }).then((val) => {
 			    	      
 			    	      });

@@ -113,15 +113,17 @@
 							<form action="./GestionComptes" method="POST">
 
 								<div class="form-group">
-									<label>Type de compte </label>
-									<div class="controls">
-										<select name="type">
-											<option value="prive" >Prive</option>
-											<option value="partage" selected>Partage</option>
-										</select>
-									</div>
+									<label>Nom :</label> <input type="text" name="nomEnt"
+										class="form-control" placeholder="nom de l'entreprise">
 								</div>
-						
+								<div class="form-group">
+									<label>Local :</label> <input type="text" name="adresse"
+										class="form-control" placeholder="adresse de l'entreprise">
+								</div>
+								<div class="form-group">
+									<label>Telephone :</label> <input type="text" name="telephone"
+										class="form-control" placeholder="telephone">
+								</div>	
 								<div class="form-group">
 									<label>solde du compte</label> <input type="number" tep="0.001" name="solde"
 										class="form-control" placeholder="solde du compte">
@@ -183,7 +185,8 @@
 			 </div>
 		  </div>
 	 </div><!--modal ends-->
-								
+					
+
 <jsp:include page="includes/footer.jsp"></jsp:include>
 <script>
 		$('.btn-modif').click(function (e) {

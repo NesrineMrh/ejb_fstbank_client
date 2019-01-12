@@ -173,8 +173,9 @@ public class GestionComptes extends HttpServlet {
 			double montant =Double.parseDouble(request.getParameter("montant"));
 			int code = Integer.parseInt(request.getParameter("code"));
 				metier.retirer(montant, code);
+
 				response.sendRedirect("./GestionComptes");
-}// teste si la requete Post est pour ajouter
+			}// teste si la requete Post est pour ajouter
 		else {
 			String type = request.getParameter("type");
 			double solde = 0;
@@ -220,5 +221,6 @@ public class GestionComptes extends HttpServlet {
 		else 
 			return false;
 	}
+	
 
 }
