@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.ejb.EJB;
@@ -50,8 +51,7 @@ public class GestionComptes extends HttpServlet {
 				out.print("true");
 			else
 				out.print("false");
-
-		}//traitement du virement
+			}//traitement du virement
 		else if (request.getParameter("verser") != null) {
 			int id = Integer.parseInt(request.getParameter("verser"));
 			System.out.println(id);
@@ -68,12 +68,26 @@ public class GestionComptes extends HttpServlet {
 			this.getServletContext().getRequestDispatcher("/retrait.jsp").forward(request, response);
 
 		}else if(request.getParameter("associer") != null) {
-			request.setAttribute("comptes", metier.consulterComptes());
-			request.setAttribute("clients", metierClient.listClient());
-			/*ArrayList<Client> clients = new ArrayList<>();
-			clients = (ArrayList<Client>) metierClient.listClientByCompte(2);
 			
-			clients.forEach(System.out::println);*/
+			ArrayList<Compte> comptes = new ArrayList<>();
+			comptes = (ArrayList<Compte>) metier.consulterComptes();
+			
+			ArrayList<Compte> comptesTrie = new ArrayList<>();
+			
+			for (Compte compte : comptes) {
+				
+				if ( compte.getType().equals("prive") && metier.count(compte.getCode()) < 1
+					|| compte.getType().equals("partage") && metier.count(compte.getCode()) < 10)
+					comptesTrie.add(compte);
+			}
+			
+			
+			
+			
+			// envoyer tous les clients et tous les comptes
+			request.setAttribute("allcomptes", comptesTrie);
+			request.setAttribute("allclients", metierClient.listClient());
+			
 			this.getServletContext().getRequestDispatcher("/compte_client.jsp").forward(request, response);
 		
 		} else {
@@ -110,14 +124,27 @@ public class GestionComptes extends HttpServlet {
 			c.setSolde(solde);
 			c.setType(type);
 			metier.modifierCompte(c);
+			response.sendRedirect("./GestionComptes");
 
-		}else if(request.getParameter("associer") != null) {
+		}//requete Post est pour associer un compte
+		else if(request.getParameter("associer") != null) {
 			String[] compte = request.getParameterValues("compte");
-			String client = request.getParameter("client");
-			for (int i = 0 ; i < compte.length ; i++) System.out.println(compte[i]);
-			System.out.println("----------------------cc"+client);
-		
-		
+			String clientid = request.getParameter("client");
+			Client client = metierClient.afficherClient(Integer.parseInt(clientid));
+			List<Compte> comptes = metierClient.listeCompte(client.getId());
+			
+			// remplire la liste de comptes pour ce client s'il le compte n'est pas deja ajoute
+			for (int i = 0 ; i < compte.length ; i++) {
+				int idCompte = Integer.parseInt(compte[i]);
+				
+				//test si le compte ni figure pas dans la liste de ses comptes .
+				if( !comptes.contains(metier.rechercherCompteParId(idCompte)) )
+				comptes.add(metier.rechercherCompteParId(Integer.parseInt(compte[i])));
+			}
+			
+			client.setComptes(comptes);
+			metierClient.modifierClient(client);
+			
 		}else if(request.getParameter("verser") != null) {
 			int codeDestine = Integer.parseInt(request.getParameter("codeDestine"));
 			double montant =Double.parseDouble(request.getParameter("montant"));
@@ -146,9 +173,8 @@ public class GestionComptes extends HttpServlet {
 			double montant =Double.parseDouble(request.getParameter("montant"));
 			int code = Integer.parseInt(request.getParameter("code"));
 				metier.retirer(montant, code);
-			}
-		
-		// teste si la requete Post est pour ajouter
+				response.sendRedirect("./GestionComptes");
+}// teste si la requete Post est pour ajouter
 		else {
 			String type = request.getParameter("type");
 			double solde = 0;
@@ -157,29 +183,42 @@ public class GestionComptes extends HttpServlet {
 			}
 			String typeCompte=request.getParameter("typeCompte");
 			
+			//creation de l'objet grace a factory
 			FactoryCompte fc = new FactoryCompte();
 			Compte compte = fc.getCompte(typeCompte);
+			
 			Date dateCreation = new Date();
 			compte.setClient(new ArrayList<Client>());
 			compte.setSolde(solde);
 			compte.setDateCreation(dateCreation);
-			
-			//le cas d'un compte professionnel il faut ajouter les champ supplaimentaire.
+
+			compte.setType(type);
+			/**le cas d'un compte professionnel il faut ajouter les champ supplaimentaire.
 			if(typeCompte.equals("Professionnel")) {
-				
-				((CompteProfessionnel) compte).setType("Professionnel");
-				}else {
-				compte.setType(type);
-				}
+				((CompteProfessionnel) compte).setType(type);
+			}
+			**/
 			metier.ajouterCompte(compte);
-			
+			response.sendRedirect("./GestionComptes");
 		}
 		/*
 		 * request.setAttribute("comptes", metier.consulterComptes());
 		 * this.getServletContext().getRequestDispatcher("/compte.jsp").forward(request,
 		 * response);
 		 */
-		response.sendRedirect("./GestionComptes");
+	}
+	
+	private boolean priveDisponible(Compte compte) {
+		if(compte.getType().equals("prive") && metier.count(compte.getCode()) < 1)
+			return true ;
+		else 
+			return false;
+	}
+	private boolean partagerDisponible(Compte compte) {
+		if(compte.getType().equals("partage") && metier.count(compte.getCode()) < 10)
+			return true ;
+		else 
+			return false;
 	}
 
 }
