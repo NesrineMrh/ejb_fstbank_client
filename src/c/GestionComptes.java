@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.ejb.EJB;
@@ -50,14 +51,43 @@ public class GestionComptes extends HttpServlet {
 				out.print("true");
 			else
 				out.print("false");
+			//traitement du virement
+			else if (request.getParameter("verser") != null) {
+				int id = Integer.parseInt(request.getParameter("verser"));
+				System.out.println(id);
+				Compte compte = metier.rechercherCompteParId(id);
+				request.setAttribute("compte", compte);
+				this.getServletContext().getRequestDispatcher("/virement.jsp").forward(request, response);
 
-		}else if(request.getParameter("associer") != null) {
-			request.setAttribute("comptes", metier.consulterComptes());
-			request.setAttribute("clients", metierClient.listClient());
-			/*ArrayList<Client> clients = new ArrayList<>();
-			clients = (ArrayList<Client>) metierClient.listClientByCompte(2);
+			}
+			else if (request.getParameter("retirer") != null) {
+				int id = Integer.parseInt(request.getParameter("retirer"));
+				System.out.println(id);
+				Compte compte = metier.rechercherCompteParId(id);
+				request.setAttribute("compte", compte);
+				this.getServletContext().getRequestDispatcher("/retrait.jsp").forward(request, response);
 			
-			clients.forEach(System.out::println);*/
+			}else if(request.getParameter("associer") != null) {
+			
+			ArrayList<Compte> comptes = new ArrayList<>();
+			comptes = (ArrayList<Compte>) metier.consulterComptes();
+			
+			ArrayList<Compte> comptesTrie = new ArrayList<>();
+			
+			for (Compte compte : comptes) {
+				
+				if ( compte.getType().equals("prive") && metier.count(compte.getCode()) < 1
+					|| compte.getType().equals("partage") && metier.count(compte.getCode()) < 10)
+					comptesTrie.add(compte);
+			}
+			
+			
+			
+			
+			// envoyer tous les clients et tous les comptes
+			request.setAttribute("allcomptes", comptesTrie);
+			request.setAttribute("allclients", metierClient.listClient());
+			
 			this.getServletContext().getRequestDispatcher("/compte_client.jsp").forward(request, response);
 		} else {
 
@@ -94,14 +124,54 @@ public class GestionComptes extends HttpServlet {
 			c.setType(type);
 			metier.modifierCompte(c);
 
-		}else if(request.getParameter("associer") != null) {
+		}//requete Post est pour associer un compte
+		else if(request.getParameter("associer") != null) {
 			String[] compte = request.getParameterValues("compte");
-			String client = request.getParameter("client");
-			for (int i = 0 ; i < compte.length ; i++) System.out.println(compte[i]);
-			System.out.println(client);
-		
-		
-		}
+			String clientid = request.getParameter("client");
+			Client client = metierClient.afficherClient(Integer.parseInt(clientid));
+			List<Compte> comptes = metierClient.listeCompte(client.getId());
+			
+			// remplire la liste de comptes pour ce client s'il le compte n'est pas deja ajoute
+			for (int i = 0 ; i < compte.length ; i++) {
+				int idCompte = Integer.parseInt(compte[i]);
+				
+				//test si le compte ni figure pas dans la liste de ses comptes .
+				if( !comptes.contains(metier.rechercherCompteParId(idCompte)) )
+				comptes.add(metier.rechercherCompteParId(Integer.parseInt(compte[i])));
+			}
+			
+			client.setComptes(comptes);
+			metierClient.modifierClient(client);
+			
+		}else if(request.getParameter("verser") != null) {
+			int codeDestine = Integer.parseInt(request.getParameter("codeDestine"));
+			double montant =Double.parseDouble(request.getParameter("montant"));
+			int code = Integer.parseInt(request.getParameter("code"));
+			System.out.println("code2"+codeDestine+"-----mont"+montant+"-------code"+code);
+			response.setContentType("text/plain");
+			PrintWriter out = response.getWriter();
+			if (metier.rechercherCompteParId(codeDestine)!=null){
+			    Compte c = metier.rechercherCompteParId(code);
+			    System.out.println("dkhhhhhhhhhhhhhhhhel!!");
+			    if(montant>c.getSolde()){
+			    	System.out.println("sodeeeeeInnn");
+					out.print("soldeInsuffisant");	
+			    }else {
+			    	System.out.println("ccccccccc bnnnn");
+				metier.verser(montant, codeDestine);
+				metier.retirer(montant, code);
+				out.print("./GestionComptes");
+			    }
+			}else {
+		    	System.out.println("ComppppppppteIntrr");
+				out.print("CompteNonTrouvee");
+			}
+		}else if(request.getParameter("retirer") != null){
+			double solde = Double.parseDouble(request.getParameter("solde"));
+			double montant =Double.parseDouble(request.getParameter("montant"));
+			int code = Integer.parseInt(request.getParameter("code"));
+				metier.retirer(montant, code);
+			}
 		// teste si la requete Post est pour ajouter
 		else {
 			String type = request.getParameter("type");
@@ -111,18 +181,21 @@ public class GestionComptes extends HttpServlet {
 			}
 			String typeCompte=request.getParameter("typeCompte");
 			
+			//creation de l'objet grace a factory
 			FactoryCompte fc = new FactoryCompte();
 			Compte compte = fc.getCompte(typeCompte);
+			
 			Date dateCreation = new Date();
 			compte.setClient(new ArrayList<Client>());
 			compte.setSolde(solde);
 			compte.setDateCreation(dateCreation);
 			compte.setType(type);
-			//le cas d'un compte professionnel il faut ajouter les champ supplaimentaire.
+			/**le cas d'un compte professionnel il faut ajouter les champ supplaimentaire.
 			if(typeCompte.equals("Professionnel")) {
 				
-				((CompteProfessionnel) compte).setAdress("LOL");
-				}
+				((CompteProfessionnel) compte).setType(type);
+			}
+			**/
 			metier.ajouterCompte(compte);
 			
 		}
@@ -132,6 +205,19 @@ public class GestionComptes extends HttpServlet {
 		 * response);
 		 */
 		response.sendRedirect("./GestionComptes");
+	}
+	
+	private boolean priveDisponible(Compte compte) {
+		if(compte.getType().equals("prive") && metier.count(compte.getCode()) < 1)
+			return true ;
+		else 
+			return false;
+	}
+	private boolean partagerDisponible(Compte compte) {
+		if(compte.getType().equals("partage") && metier.count(compte.getCode()) < 10)
+			return true ;
+		else 
+			return false;
 	}
 
 }

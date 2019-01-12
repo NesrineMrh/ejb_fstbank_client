@@ -18,7 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.entity.Client;
+import com.entity.ClientProfessionnel;
 import com.entity.Compte;
+import com.entity.CompteProfessionnel;
 import com.metier.GestionClientsLocal;
 import com.metier.GestionComptesLocal;
 
@@ -82,12 +84,22 @@ public class GestionClients extends HttpServlet {
 		// teste si la requete Post est pour ajouter
 		else {
 			
-			String nom = request.getParameter("nom");
-			String prenom = request.getParameter("prenom");
-			List<Compte> comptes = new ArrayList<>();
-			//comptes.add(metier.rechercherCompteParId(2));
 			
-			metierClient.ajouterClient(new Client(nom,prenom,comptes));
+			//comptes.add(metier.rechercherCompteParId(2));
+			String typeClient=request.getParameter("typeClient");
+			
+			if(typeClient.equals("Professionnel")) {
+				String nom = request.getParameter("nomEnt");
+				String adresse = request.getParameter("adresseEnt");
+				String telephone = request.getParameter("telephoneEnt");
+				List<Compte> comptes = new ArrayList<>();
+				metierClient.ajouterClientProfessionnel(new ClientProfessionnel(adresse,telephone));
+				}else {
+					String nom = request.getParameter("nom");
+					String prenom = request.getParameter("prenom");
+					List<Compte> comptes = new ArrayList<>();
+					metierClient.ajouterClient(new Client(nom,prenom,comptes));
+				}
 		}
 		response.sendRedirect("./GestionClients");
 	}

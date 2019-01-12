@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page isELIgnored="false"%>
 <jsp:include page="includes/header.jsp"></jsp:include>
@@ -40,15 +39,21 @@
 								<td>${compte.dateCreation}</td>
 								<td>${compte.type}</td>
 								<td class="center">
-								<a class="btn btn-success btn-view" href="#" data-id="${compte.code}">
-										<i class="glyphicon glyphicon-zoom-in icon-white"></i> Afficher
-								</a> <a class="btn btn-info btn-edit" href="#" data-id="${compte.code}"> <i
-										class="glyphicon glyphicon-edit icon-white "></i> Modifier
-								</a> 
-								<!-- JS du boutton supprimer est dans includes/footer.jsp -->
-								<a class="btn btn-danger btn-delete" href="#" data-id="${compte.code}"> <i
-										class="glyphicon glyphicon-trash icon-white"></i> Supprimer
-								</a></td>
+									<a class="btn btn-success btn-view btn-verser" href="#" data-id="${compte.code}">
+										<i class="glyphicon glyphicon-zoom-in icon-white"></i> verser
+									</a>
+									<a class="btn btn-primary btn-view btn-retirer" href="#" data-id="${compte.code}">
+										<i class="glyphicon glyphicon-zoom-in icon-white"></i> retirer
+									</a>
+									<a class="btn btn-info btn-edit btn-modif" href="#" data-id="${compte.code}">
+									 <i class="glyphicon glyphicon-edit icon-white "></i> Modifier
+									</a>	 
+									<!-- JS du boutton supprimer est dans includes/footer.jsp -->
+									<a class="btn btn-danger btn-delete" href="#" data-id="${compte.code}">
+									 <i class="glyphicon glyphicon-trash icon-white"></i> Supprimer
+									</a>
+								</td>
+								
 							</tr>
 							</c:forEach>
 						</tbody>
@@ -109,15 +114,6 @@
 						<div class="box-content">
 							<form action="./GestionComptes" method="POST">
 
-								<div class="form-group">
-									<label>Type de compte </label>
-									<div class="controls">
-										<select name="type">
-											<option value="prive" >Prive</option>
-											<option value="partage" selected>Partage</option>
-										</select>
-									</div>
-								</div>
 								<div class="form-group">
 									<label>Nom :</label> <input type="text" name="nomEnt"
 										class="form-control" placeholder="nom de l'entreprise">
@@ -193,10 +189,26 @@
             </div>
         </div>
     </div><!--modal ends-->
-    
+
+    <!--modal start -->
+	 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		 <div class="modal-dialog">
+			<div class="modal-content">
+			   <div class="modal-header">
+				   <button type="button" class="close" data-dismiss="modal">×</button>
+				   <h3>Faire un virement/retrait</h3>
+			   </div>
+			   <div class="modal-body" id="info">
+		
+		       </div>
+		      
+			 </div>
+		  </div>
+	 </div><!--modal ends-->
+					
 <jsp:include page="includes/footer.jsp"></jsp:include>
 <script>
-		$('.btn-edit').click(function (e) {
+		$('.btn-modif').click(function (e) {
 			var id = $(this).data('id');
 			$.ajax({
 				type : 'get',
@@ -208,6 +220,29 @@
 				}
 			});
 		});
-	
+		$('.btn-verser').click(function (e) {
+			var id = $(this).data('id');
+			$.ajax({
+				type : 'get',
+				url : 'GestionComptes?verser='+id,
+				success : function(data) {
+					
+						$('#info').html(data);
+						
+				}
+			});
+		});
+		$('.btn-retirer').click(function (e) {
+			var id = $(this).data('id');
+			$.ajax({
+				type : 'get',
+				url : 'GestionComptes?retirer='+id,
+				success : function(data) {
+					
+						$('#info').html(data);
+						
+				}
+			});
+		});
 </script>
 

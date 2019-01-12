@@ -30,18 +30,11 @@
 							<div class="controls">
 								<select data-placeholder="Your Favorite Football Team"
 									id="selectError2" data-rel="chosen" name="client">
-									<option value=""></option>
-									<optgroup label="NFC EAST">
-										<option>Dallas Cowboys</option>
-										<option>New York Giants</option>
-										<option>Philadelphia Eagles</option>
-										<option>Washington Redskins</option>
-									</optgroup>
-									<optgroup label="NFC NORTH">
-										<option>Chicago Bears</option>
-										<option>Detroit Lions</option>
-										<option>Green Bay Packers</option>
-										<option>Minnesota Vikings</option>
+									<option value="">choix d'un client</option>
+									<optgroup label="Client particulier">
+										<c:forEach items="${allclients}" var="c">
+											<option value=${c.id }>${c.nom}${ c.prenom }</option>
+										</c:forEach>
 									</optgroup>
 								</select>
 							</div>
@@ -52,73 +45,22 @@
 								un ou plusieur comptes</label>
 
 							<div class="controls">
-								<select id="selectError1" multiple class="form-control" 
+								<select id="selectError1" multiple class="form-control"
 									data-rel="chosen" name="compte">
-									<option>Option 1</option>
-									<option selected>Option 2</option>
-									<option>Option 3</option>
-									<option>Option 4</option>
-									<option>Option 5</option>
+									<c:forEach items="${allcomptes}" var="c">
+										<option value="${c.code}">${ c.code }: ${ c.solde }</option>
+									</c:forEach>
 								</select>
 							</div>
 						</div>
-						<input type="submit" name="associer"></input>
-					
+						<br>
+						  <button type="submit" class="btn btn-default" name="associer">Envoyer</button>
 					</form>
 				</div>
 			</div>
 		</div>
-		<!--/span
-								<optgroup label="Particulier">
-									<c:forEach items="${clients}" var="client">
-										<c:if test="${client.type}">
-											<option>${client.nom}${client.prenom}</option>
-										</c:if>										
-									</c:forEach>
-								</optgroup>
-								<optgroup label="Professionnel">
-									<c:forEach items="${clients}" var="client">
-										<option>${client.nom}${client.prenom}</option>		
-									</c:forEach>						
-								</optgroup>-->
 
-				<div class="row">
-				<div class="col-md-12">
-
-					<!--table satrts-->
-					<table
-						class="table table-striped table-bordered bootstrap-datatable datatable responsive">
-					<thead>
-							<tr>
-								<th>N°</th>
-								<th>Nom</th>
-								<th>Prenom</th>
-								<th>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-						<c:forEach items="${clients}" var="client">
-							<tr>
-								<td>${client.id}</td>
-								<td>${client.nom}</td>
-								<td>${client.prenom}</td>
-								<td class="center">
-								<a class="btn btn-success btn-view" href="#" data-id="${client.id}">
-										<i class="glyphicon glyphicon-zoom-in icon-white"></i> Afficher
-								</a> <a class="btn btn-info btn-edit" href="#" data-id="${client.id}"> <i
-										class="glyphicon glyphicon-edit icon-white "></i> Modifier
-								</a> 
-								<!-- JS du boutton supprimer est dans includes/footer.jsp -->
-								<a class="btn btn-danger btn-delete-client" href="#" data-id="${client.id}"> <i
-										class="glyphicon glyphicon-trash icon-white"></i> Supprimer
-								</a></td>
-							</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-					<!--table ends -->
-				</div>
-			</div>
+	</div>
 </div>
-	<!--/row-->
-	<jsp:include page="includes/footer.jsp"></jsp:include>
+<!--/row-->
+<jsp:include page="includes/footer.jsp"></jsp:include>
