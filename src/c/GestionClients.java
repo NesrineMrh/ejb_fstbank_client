@@ -88,6 +88,8 @@ public class GestionClients extends HttpServlet {
 			String typeClient=request.getParameter("typeClient");
 			String nom = request.getParameter("nom");
 			String prenom = request.getParameter("prenom");
+			String login = request.getParameter("login");
+			String password = request.getParameter("password");
 			String adresse;
 			String telephone ;
 			//creation de l'objet grace a factory
@@ -95,7 +97,8 @@ public class GestionClients extends HttpServlet {
 			Client client = fc.getClient(typeClient);
 			client.setNom(nom);
 			client.setPrenom(prenom);
-			
+			client.setPassword(password);
+			client.setLogin(login);
 			if(typeClient.equals("Professionnel")) {
 				adresse = request.getParameter("adresseEnt");
 				telephone = request.getParameter("telephoneEnt");
