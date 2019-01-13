@@ -158,7 +158,7 @@ public class GestionComptes extends HttpServlet {
 			    	System.out.println("ccccccccc bnnnn");
 				metier.verser(montant, codeDestine);
 				metier.retirer(montant, code);
-				out.print("./GestionComptes");
+				out.print("./Acceuil_client");
 			    }
 			}else {
 		    	System.out.println("ComppppppppteIntrr");
@@ -170,7 +170,7 @@ public class GestionComptes extends HttpServlet {
 			int code = Integer.parseInt(request.getParameter("code"));
 				metier.retirer(montant, code);
 
-				response.sendRedirect("./GestionComptes");
+				response.sendRedirect("./Acceuil_client");
 			}// teste si la requete Post est pour ajouter
 		else {
 			String type = request.getParameter("type");

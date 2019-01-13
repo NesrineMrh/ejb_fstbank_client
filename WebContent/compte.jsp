@@ -37,13 +37,7 @@
 								<td>${compte.dateCreation}</td>
 								<td>${compte.type}</td>
 								<td class="center">
-									<a class="btn btn-success btn-view btn-verser" href="#" data-id="${compte.code}">
-										<i class="glyphicon glyphicon-zoom-in icon-white"></i> verser
-									</a>
-									<a class="btn btn-primary btn-view btn-retirer" href="#" data-id="${compte.code}">
-										<i class="glyphicon glyphicon-zoom-in icon-white"></i> retirer
-									</a>
-									<a class="btn btn-info btn-edit btn-modif" href="#" data-id="${compte.code}">
+									<a class="btn btn-primary btn-edit btn-modif" href="#" data-id="${compte.code}">
 									 <i class="glyphicon glyphicon-edit icon-white "></i> Modifier
 									</a>	 
 									<!-- JS du boutton supprimer est dans includes/footer.jsp -->
@@ -197,30 +191,6 @@
 				success : function(data) {
 					
 						$('#infoModif').html(data);
-						
-				}
-			});
-		});
-		$('.btn-verser').click(function (e) {
-			var id = $(this).data('id');
-			$.ajax({
-				type : 'get',
-				url : 'GestionComptes?verser='+id,
-				success : function(data) {
-					
-						$('#info').html(data);
-						
-				}
-			});
-		});
-		$('.btn-retirer').click(function (e) {
-			var id = $(this).data('id');
-			$.ajax({
-				type : 'get',
-				url : 'GestionComptes?retirer='+id,
-				success : function(data) {
-					
-						$('#info').html(data);
 						
 				}
 			});
