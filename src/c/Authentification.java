@@ -14,7 +14,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.annotation.WebFilter;
 
-@WebFilter("/kok")
+@WebFilter("/k")
 public class Authentification implements Filter {
 
 	@Override
@@ -43,7 +43,7 @@ public class Authentification implements Filter {
 
 		boolean loggedIn;
 		
-		if(session.getAttribute("banquierId") != null || session.getAttribute("clientId") != null)
+		if(session.getAttribute("banquierId") != null || session.getAttribute("ClientId") != null)
 		{
 			loggedIn = true;
 		}

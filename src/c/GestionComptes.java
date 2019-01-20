@@ -16,13 +16,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.entity.Client;
 import com.entity.Compte;
 import com.entity.CompteProfessionnel;
 import com.entity.FactoryCompte;
+import com.entity.Operation;
 import com.metier.GestionClientsLocal;
 import com.metier.GestionComptesLocal;
+import com.metier.GestionOperationLocal;
 
 @WebServlet("/GestionComptes")
 public class GestionComptes extends HttpServlet {
@@ -32,9 +35,12 @@ public class GestionComptes extends HttpServlet {
 	GestionComptesLocal metier;
 	@EJB
 	GestionClientsLocal metierClient;
+	@EJB
+	GestionOperationLocal metierOp ;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		// rediriger vers la page de modification (ajax).
 		if (request.getParameter("modifier") != null) {
 			int id = Integer.parseInt(request.getParameter("modifier"));
@@ -66,6 +72,13 @@ public class GestionComptes extends HttpServlet {
 			Compte compte = metier.rechercherCompteParId(id);
 			request.setAttribute("compte", compte);
 			this.getServletContext().getRequestDispatcher("/retrait.jsp").forward(request, response);
+
+		}else if (request.getParameter("virement") != null) {
+			int id = Integer.parseInt(request.getParameter("virement"));
+			System.out.println(id);
+			Compte compte = metier.rechercherCompteParId(id);
+			request.setAttribute("compte", compte);
+			this.getServletContext().getRequestDispatcher("/verser.jsp").forward(request, response);
 
 		}else if(request.getParameter("associer") != null) {
 			
@@ -158,6 +171,8 @@ public class GestionComptes extends HttpServlet {
 			    	System.out.println("ccccccccc bnnnn");
 				metier.verser(montant, codeDestine);
 				metier.retirer(montant, code);
+				
+				metierOp.add(new Operation("verser",new Date(),montant,c));
 				out.print("./Acceuil_client");
 			    }
 			}else {
@@ -169,9 +184,17 @@ public class GestionComptes extends HttpServlet {
 			double montant =Double.parseDouble(request.getParameter("montant"));
 			int code = Integer.parseInt(request.getParameter("code"));
 				metier.retirer(montant, code);
-
+				
+				metierOp.add(new Operation("retirer",new Date(),montant,metier.rechercherCompteParId(code)));
 				response.sendRedirect("./Acceuil_client");
-			}// teste si la requete Post est pour ajouter
+		}else if(request.getParameter("virement") != null){
+				double solde = Double.parseDouble(request.getParameter("solde"));
+				double montant =Double.parseDouble(request.getParameter("montant"));
+				int code = Integer.parseInt(request.getParameter("code"));
+					metier.verser(montant, code);
+					metierOp.add(new Operation("virement",new Date(),montant,metier.rechercherCompteParId(code)));
+					response.sendRedirect("./Acceuil_client");
+				}// teste si la requete Post est pour ajouter
 		else {
 			String type = request.getParameter("type");
 			double solde = 0;

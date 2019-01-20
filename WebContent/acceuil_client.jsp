@@ -160,6 +160,9 @@
 									<a class="btn btn-primary btn-view btn-retirer" href="#" data-id="${compte.code}">
 										<i class="glyphicon glyphicon-zoom-in icon-white"></i> retirer
 									</a>
+									<a class="btn btn-info btn-view btn-virement" href="#" data-id="${compte.code}">
+										<i class="glyphicon glyphicon-zoom-in icon-white"></i> virement
+									</a>
 									<a class="btn btn-info btn-view btn-imprimer" href="#" data-id="${compte.code}">
 										<i class="glyphicon glyphicon-zoom-in icon-white"></i> Imprimer
 									</a>
@@ -173,6 +176,37 @@
 				</div>
 			</div>
 			<!--row ends-->
+			<br><br>
+			<div class="row">
+				<div class="col-md-12">
+
+					<!--table satrts-->
+					<table
+						class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+					<thead>
+							<tr>
+								<th>N°</th>
+								<th>type</th>
+								<th>Date de creation</th>
+								<th>montant</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+						<c:forEach items="${operations}" var="o">
+							<tr>
+								<td>${o.num}</td>
+								<td>${o.dateCreation}</td>
+								<td>${o.montant}</td>
+								<td>${o.type}</td>
+								
+							</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					<!--table ends -->
+				</div>
+			</div>
 		</div>
 		
 	<!--modal start -->
@@ -209,6 +243,18 @@
 			$.ajax({
 				type : 'get',
 				url : 'GestionComptes?retirer='+id,
+				success : function(data) {
+					
+						$('#info').html(data);
+						
+				}
+			});
+		});
+		$('.btn-virement').click(function (e) {
+			var id = $(this).data('id');
+			$.ajax({
+				type : 'get',
+				url : 'GestionComptes?virement='+id,
 				success : function(data) {
 					
 						$('#info').html(data);

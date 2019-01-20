@@ -1,6 +1,7 @@
 package c;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -10,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.entity.Compte;
+import com.entity.Operation;
 import com.metier.GestionClientsLocal;
+import com.metier.GestionOperationLocal;
 
 /**
  * Servlet implementation class Acceuil_client
@@ -20,6 +24,8 @@ public class Acceuil_client extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@EJB
 	GestionClientsLocal metierClient;
+	@EJB
+	GestionOperationLocal metierOp;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -36,9 +42,21 @@ public class Acceuil_client extends HttpServlet {
 		HttpSession session = request.getSession(true); 
 		//faire une redirection vers la page acceuil client ...
 		//if(session.getAttribute("user")!=null) {
-			//int id =(int) session.getAttribute("user");
-		// envoyer la liste des client
-		request.setAttribute("comptes", metierClient.listeCompte(3));
+			int id =(int) session.getAttribute("ClientId");
+		// envoyer la de compte pour ce client
+			ArrayList<Compte> comptes = (ArrayList<Compte>) metierClient.listeCompte(id);
+			ArrayList<Operation> operations= new ArrayList<>();
+			ArrayList<Operation> op ;
+			for (Compte compte : comptes) {
+				op = metierOp.Operations(compte.getCode());
+				for (Operation operation : op) {
+					operations.add(operation);
+				}
+			}
+			
+		request.setAttribute("operations", operations);
+		request.setAttribute("comptes", comptes);
+		
 		this.getServletContext().getRequestDispatcher("/acceuil_client.jsp").forward(request, response);
 		
 	}

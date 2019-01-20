@@ -72,6 +72,15 @@
 									<label>Prenom</label> <input type="text"
 										name="prenom" class="form-control" placeholder="prenom">
 								</div>
+								<div class="form-group">
+									<label for="exampleInputlogin">Login</label> <input type="text"
+										name="login" class="form-control" placeholder="login">
+								</div>
+								<div class="form-group">
+									<label for="exampleInputPassword1">Password</label> <input
+										type="password" name="password" class="form-control"
+										placeholder="password">
+								</div>
 								<input type="hidden" name="typeClient" value="particulier">
 								<input type="submit" value="Envoyer" name="ajouterclient">
 								
